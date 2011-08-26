@@ -10,8 +10,11 @@ This gem adds haml templating support to the Rails 3.1 asset pipeline. This gem 
 
 Add this to your `Gemfile`
 
-    gem haml_assets
-    gem ejs
+    gem 'haml_assets'
+    gem 'ejs'
+    gem 'haml', :git => 'https://github.com/infbio/haml.git', :branch => 'form_for_fix'
+
+There is a catastrophic form_for bug in the haml gem. Use our fork until it is fixed. Check our fork for details.
 
 # Using haml for your Javascript templates
 
