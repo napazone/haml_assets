@@ -37,7 +37,7 @@ module HamlAssets
     def prepare; end
 
     def render_haml
-      Haml::Engine.new(data, Haml::Template.options.merge(escape_attrs: false)).render(scope, locals)
+      Haml::Engine.new(data, Haml::Template.options.merge(:escape_attrs => false)).render(scope, locals)
     end
 
     def scope
