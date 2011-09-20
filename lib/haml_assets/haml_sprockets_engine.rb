@@ -8,11 +8,15 @@ module HamlAssets
     end
 
     module ViewContext
-      include Rails.application.routes.url_helpers
-      include Rails.application.routes.mounted_helpers
-      include ActionView::Helpers
-
       attr_accessor :output_buffer
+
+      def self.included(klass)
+        klass.instance_eval do
+          include Rails.application.routes.url_helpers
+          include Rails.application.routes.mounted_helpers
+          include ActionView::Helpers
+        end
+      end
 
       def protect_against_forgery?
         false
