@@ -7,3 +7,11 @@ module HamlAssets
     end
   end
 end
+
+module HamlAssets
+  class Railtie < ::Rails::Railtie
+    if ::Rails.version.to_f >= 3.1
+      config.app_generators.javascript_template_engine :haml
+    end
+  end
+end
