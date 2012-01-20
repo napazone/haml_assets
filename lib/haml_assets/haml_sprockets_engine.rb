@@ -27,8 +27,8 @@ module HamlAssets
       begin
         "" + render_haml(view_context(scope), locals)
       rescue Exception => e
-        Rails.logger.debug "ERROR: compiling #{file} RAISED #{e}"
-        Rails.logger.debug "Backtrace: #{e.backtrace.join("\n")}"
+        Rails.logger.error "ERROR: compiling #{file} RAISED #{e}"
+        Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
       end
     end
 
