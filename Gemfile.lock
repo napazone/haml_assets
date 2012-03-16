@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    haml_assets (0.0.5)
+    haml_assets (0.1.0)
       haml
       tilt
 
