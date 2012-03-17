@@ -1,12 +1,9 @@
-**BREAKING CHANGE** `haml_assets` now works with the `haml` gem. Please update
-your gemfile.
-
-# Use `haml` to write your JavaScript templates in the asset pipeline
+# Haml for JavaScript templates with the asset pipeline
 
 Writing JavaScript templates for Backbone.js (or other frameworks) in your app?
 Would you like to use `haml` in the asset pipeline?
 
-This gem adds `haml` support to the Rails 3.1 asset pipeline. You will also
+This gem adds `haml` support to the Rails 3.1+ asset pipeline. You will also
 need a gem that creates a compiled JavaScript template like `hogan_assets` or
 `handlebars_assets` as well.
 
@@ -15,6 +12,11 @@ need a gem that creates a compiled JavaScript template like `hogan_assets` or
 Add this to your `Gemfile`
 
     gem 'haml_assets'
+
+## Upgrading from 0.0.x
+
+`haml_assets` now works with the `haml` gem. Please update your gemfile to only
+require `haml_assets.`.
 
 # Using `haml` for your JavaScript templates
 
