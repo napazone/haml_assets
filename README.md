@@ -13,12 +13,12 @@ Add this to your `Gemfile`
 
     gem 'haml_assets'
 
-## Upgrading from 0.0.x
+### Upgrading from 0.0.x
 
 `haml_assets` now works with the `haml` gem. Please update your gemfile to only
 require `haml_assets.`.
 
-# Using `haml` for your JavaScript templates
+## Writing your JavaScript templates
 
 ## Templates directory
 
@@ -28,7 +28,7 @@ You should located your templates under `app/assets`; we suggest
 
     //= require_tree ../templates
 
-## The template file
+### The template file
 
 Inside your templates directory, add your template file. The file should be
 named as follows
@@ -54,11 +54,11 @@ if you are writing an *edit* template, for example
       = f.label :name, "Name"
       = f.text_field :name, class: 'text required', autofocus: true, value: '{{name}}'
 
-# TODO
+## TODO
 
 Make `render` available, so you can render a partial.
 
-# Contributing
+## Contributing
 
 Once you've made your great commits:
 
@@ -68,7 +68,7 @@ Once you've made your great commits:
 1. Create a Pull Request from your branch
 1. That's it!
 
-# Authors
+## Authors
 
-Les Hill  : @leshill
-Wes Gibbs : @wgibbs
+* Les Hill  : @leshill
+* Wes Gibbs : @wgibbs
