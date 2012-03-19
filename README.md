@@ -20,7 +20,7 @@ require `haml_assets.`.
 
 ## Writing your JavaScript templates
 
-## Templates directory
+### Templates directory
 
 You should located your templates under `app/assets`; we suggest
 `app/assets/templates`. In your JavaScript manifest file (for example
