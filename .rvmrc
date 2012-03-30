@@ -1,1 +1,1 @@
-rvm use default@handlebars_assets
+rvm use default@haml_assets
