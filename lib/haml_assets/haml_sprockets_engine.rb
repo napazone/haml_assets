@@ -8,7 +8,15 @@ module HamlAssets
     end
 
     module ViewContext
-      attr_accessor :output_buffer
+      attr_accessor :output_buffer, :_view_renderer, :_lookup_context
+
+      def view_renderer
+        @_view_renderer ||= ActionView::Renderer.new(lookup_context)
+      end
+
+      def lookup_context
+        @_lookup_context ||= ActionView::LookupContext.new(Rails.root.join("app", "assets", "templates"))
+      end
 
       def output_buffer_with_haml
         return haml_buffer.buffer if is_haml?
