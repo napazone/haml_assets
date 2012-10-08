@@ -7,6 +7,19 @@ module HamlAssets
       'application/javascript'
     end
 
+    class LookupContext < ActionView::LookupContext
+      def initialize(haml_context, path)
+        super(path)
+        @view_context = haml_context
+      end
+
+      def find_template(*args)
+        super.tap do |r|
+          @view_context.depend_on(r.identifier)
+        end
+      end
+    end
+
     module ViewContext
       attr_accessor :output_buffer, :_view_renderer, :_lookup_context
 
@@ -15,7 +28,7 @@ module HamlAssets
       end
 
       def lookup_context
-        @_lookup_context ||= ActionView::LookupContext.new(Rails.root.join("app", "assets", "templates"))
+        @_lookup_context ||= LookupContext.new(self, Rails.root.join("app", "assets", "templates"))
       end
 
       def output_buffer_with_haml
