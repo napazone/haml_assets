@@ -80,3 +80,8 @@ Once you've made your great commits:
 
 * Les Hill  : @leshill
 * Wes Gibbs : @wgibbs
+
+## Contributors
+
+* Eugene Pimenov    (@libc)      : Rendering partials
+* Raphael Randschau (@nicolai86) : Render partials
