@@ -27,8 +27,12 @@ module HamlAssets
         @_view_renderer ||= ActionView::Renderer.new(lookup_context)
       end
 
+      def environment_paths
+        environment.paths.to_a
+      end
+
       def lookup_context
-        @_lookup_context ||= LookupContext.new(self, Rails.root.join("app", "assets", "templates"))
+        @_lookup_context ||= LookupContext.new(self, environment_paths)
       end
 
       def output_buffer_with_haml
