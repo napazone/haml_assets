@@ -90,14 +90,10 @@ module HamlAssets
       Haml::Engine.new(data, Haml::Template.options.merge(:escape_attrs => false)).render(context, locals)
     end
 
-    # The Sprockets context is shared among all the processors, give haml its
-    # own context
     def view_context(scope)
-      @view_context ||=
-        context_class(scope).new(
-          scope.environment,
-          scope.logical_path.to_s,
-          scope.pathname).tap { |ctx| ctx.class.send(:include, ViewContext) }
+      @view_context ||= scope.tap do |s|
+        s.singleton_class.instance_eval { include HamlAssets::HamlSprocketsEngine::ViewContext }
+      end
     end
   end
 end
