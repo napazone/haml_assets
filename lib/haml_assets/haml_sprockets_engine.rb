@@ -7,8 +7,33 @@ module HamlAssets
       'application/javascript'
     end
 
+    class LookupContext < ActionView::LookupContext
+      def initialize(haml_context, path)
+        super(path)
+        @view_context = haml_context
+      end
+
+      def find_template(*args)
+        super.tap do |r|
+          @view_context.depend_on(r.identifier)
+        end
+      end
+    end
+
     module ViewContext
-      attr_accessor :output_buffer
+      attr_accessor :output_buffer, :_view_renderer, :_lookup_context
+
+      def view_renderer
+        @_view_renderer ||= ActionView::Renderer.new(lookup_context)
+      end
+
+      def environment_paths
+        environment.paths.to_a
+      end
+
+      def lookup_context
+        @_lookup_context ||= LookupContext.new(self, environment_paths)
+      end
 
       def output_buffer_with_haml
         return haml_buffer.buffer if is_haml?
@@ -60,14 +85,10 @@ module HamlAssets
       Haml::Engine.new(data, Haml::Template.options.merge(:escape_attrs => false)).render(context, locals)
     end
 
-    # The Sprockets context is shared among all the processors, give haml its
-    # own context
     def view_context(scope)
-      @view_context ||=
-        context_class(scope).new(
-          scope.environment,
-          scope.logical_path.to_s,
-          scope.pathname).tap { |ctx| ctx.class.send(:include, ViewContext) }
+      @view_context ||= scope.tap do |s|
+        s.singleton_class.instance_eval { include HamlAssets::HamlSprocketsEngine::ViewContext }
+      end
     end
   end
 end

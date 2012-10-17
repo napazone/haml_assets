@@ -54,9 +54,17 @@ if you are writing an *edit* template, for example
       = f.label :name, "Name"
       = f.text_field :name, class: 'text required', autofocus: true, value: '{{name}}'
 
-## TODO
+## Rendering partials
 
-Make `render` available, so you can render a partial.
+You can render partials within your views. Because this is hacked in, you can
+nest your partials as normal, but they must have a recognized format such as
+`html`. For example
+
+    shared/_timestamps.html.haml
+
+A partial will become a part of whatever template you are rendering, so make
+sure that you are generating the correct markup. For example, do not include an
+embedded coffeescript partial inside an embedded javascript template.
 
 ## Contributing
 
@@ -72,3 +80,8 @@ Once you've made your great commits:
 
 * Les Hill  : @leshill
 * Wes Gibbs : @wgibbs
+
+## Contributors
+
+* Eugene Pimenov    (@libc)      : Rendering partials
+* Raphael Randschau (@nicolai86) : Render partials
