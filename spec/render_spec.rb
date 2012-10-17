@@ -29,4 +29,16 @@ describe HamlAssets do
       template.send(:render_haml, context, {}).strip.should eq(%Q(<div>partial</div>))
     end
   end
+
+  context 'evaluating' do
+    let(:path) { 'app/assets/templates/invalid.haml' }
+
+    it "does not catch errors" do
+      template = HamlAssets::HamlSprocketsEngine.new(path) { %Q(%div{ %invalid }) }
+      template.should_receive(:view_context).with(:scope).and_return(Object.new)
+      expect do
+        template.evaluate(:scope, {})
+      end.to raise_error(SyntaxError)
+    end
+  end
 end

@@ -70,12 +70,7 @@ module HamlAssets
     end
 
     def evaluate(scope, locals, &block)
-      begin
-        "" + render_haml(view_context(scope), locals)
-      rescue Exception => e
-        Rails.logger.error "ERROR: compiling #{file} RAISED #{e}"
-        Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
-      end
+      "" + render_haml(view_context(scope), locals)
     end
 
     protected
