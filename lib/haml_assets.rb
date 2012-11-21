@@ -7,5 +7,6 @@ if defined? Rails
 end
 
 module HamlAssets
+  autoload :Config, "haml_assets/config"
   autoload :HamlSprocketsEngine, "haml_assets/haml_sprockets_engine"
 end
