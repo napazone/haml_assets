@@ -80,10 +80,6 @@ module HamlAssets
 
     protected
 
-    def context_class(scope)
-      @context_class ||= Class.new(scope.environment.context_class)
-    end
-
     def prepare; end
 
     def render_haml(context, locals)
