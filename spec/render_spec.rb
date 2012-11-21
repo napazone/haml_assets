@@ -29,4 +29,31 @@ describe HamlAssets do
       template.send(:render_haml, context, {}).strip.should eq(%Q(<div>partial</div>))
     end
   end
+
+  context 'rendering from app/views' do
+
+    class Context
+      include HamlAssets::HamlSprocketsEngine::ViewContext
+
+      attr_accessor :environment
+    end
+
+    let(:context) { Context.new }
+    let(:environment) { stub :environment, paths: paths }
+    let(:paths) { ['path1', 'path2' ] }
+
+    before { context.environment = environment }
+
+    after { HamlAssets::Config.look_in_app_views = false }
+
+    it 'when not on, just uses the environment paths to find templates' do
+      HamlAssets::Config.look_in_app_views = false
+      context.environment_paths.should eq(paths)
+    end
+
+    it 'when on, adds app/views to the environment paths to find templates' do
+      HamlAssets::Config.look_in_app_views = true
+      context.environment_paths.should eq(paths + [(Rails.root + 'app/views').to_s])
+    end
+  end
 end

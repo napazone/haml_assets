@@ -28,7 +28,9 @@ module HamlAssets
       end
 
       def environment_paths
-        environment.paths.to_a
+        paths = environment.paths.to_a
+        paths += [(Rails.root + 'app/views').to_s] if HamlAssets::Config.look_in_app_views
+        paths
       end
 
       def lookup_context
