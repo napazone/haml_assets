@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "haml_assets"
   s.version     = HamlAssets::VERSION
   s.authors     = ["Les Hill", "Wes Gibbs"]
-  s.email       = ["les@infbio.com", "wes@infbio.com"]
-  s.homepage    = ""
+  s.email       = ["leshill@gmail.com", "wes@infbio.com"]
+  s.homepage    = "https://github.com/carezone/haml_assets"
   s.summary     = %q{Use Haml with Rails helpers in the asset pipeline}
   s.description = %q{Use Haml with Rails helpers in the asset pipeline}
 
