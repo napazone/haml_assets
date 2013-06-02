@@ -66,6 +66,22 @@ A partial will become a part of whatever template you are rendering, so make
 sure that you are generating the correct markup. For example, do not include an
 embedded coffeescript partial inside an embedded javascript template.
 
+### Finding partials in `app/views`
+
+*Warning* this is a potentially confusing option!
+
+If you need to share a partial with Rails views, you can tell `haml_assets` to
+share partials with the Rails app by looking for the templates in `app/views`.
+Add this to an initializer:
+
+    HamlAssets::Config.look_in_app_views = true
+
+Now your asset pipeline `haml` views will additionally look for partials in the
+usual Rails location `app/views`.
+
+See this issue from `handlebars_assets` for a dicussion of the asset pipeline
+and initializers [issue 34](https://github.com/leshill/handlebars_assets/issues/34).
+
 ## Contributing
 
 Once you've made your great commits:
