@@ -1,5 +1,9 @@
 ## On master
 
+## v0.2.2 (2013-06-02)
+
+* Allow partials to be read from app/views
+
 ## v0.2.1 (2012-10-08)
 
 * Allow partials to trigger recompile (@libc)
