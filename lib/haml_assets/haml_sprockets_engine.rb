@@ -45,7 +45,7 @@ module HamlAssets
       def set_output_buffer_with_haml(new)
         if is_haml?
           new = String.new(new) if Haml::Util.rails_xss_safe? &&
-            new.is_a?(Haml::Util.rails_safe_buffer_class)
+            new.is_a?(ActiveSupport::SafeBuffer)
           haml_buffer.buffer = new
         else
           set_output_buffer_without_haml new
