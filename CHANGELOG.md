@@ -1,5 +1,9 @@
 ## On master
 
+## v0.3.0 (2016-04-21)
+
+* Haml 4 compatibility
+
 ## v0.2.2 (2013-06-02)
 
 * Allow partials to be read from app/views
