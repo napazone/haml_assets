@@ -2,10 +2,8 @@ require 'haml'
 require 'tilt'
 
 module HamlAssets
-  class HamlSprocketsEngine < Tilt::Template
-    def self.default_mime_type
-      'application/javascript'
-    end
+  class HamlSprocketsEngine < Tilt::HamlTemplate
+    self.default_mime_type = 'application/javascript'
 
     class LookupContext < ActionView::LookupContext
       def initialize(haml_context, path)
@@ -45,7 +43,7 @@ module HamlAssets
       def set_output_buffer_with_haml(new)
         if is_haml?
           new = String.new(new) if Haml::Util.rails_xss_safe? &&
-            new.is_a?(Haml::Util.rails_safe_buffer_class)
+            new.is_a?(ActiveSupport::SafeBuffer)
           haml_buffer.buffer = new
         else
           set_output_buffer_without_haml new
@@ -72,21 +70,11 @@ module HamlAssets
     end
 
     def evaluate(scope, locals, &block)
-      begin
-        "" + render_haml(view_context(scope), locals)
-      rescue Exception => e
-        Rails.logger.error "ERROR: compiling #{file} RAISED #{e}"
-        Rails.logger.error "Backtrace: #{e.backtrace.join("\n")}"
-      end
+      scope = view_context(scope)
+      super
     end
 
     protected
-
-    def prepare; end
-
-    def render_haml(context, locals)
-      Haml::Engine.new(data, Haml::Template.options.merge(:escape_attrs => false)).render(context, locals)
-    end
 
     def view_context(scope)
       @view_context ||= scope.tap do |s|
