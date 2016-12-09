@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    haml_assets (0.2.2)
+    haml_assets (0.3.0)
       haml
       tilt (~> 1.4.1)
 
@@ -139,4 +139,4 @@ DEPENDENCIES
   test-unit (~> 3.1.5)
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
