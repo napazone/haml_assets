@@ -3,7 +3,7 @@ require 'spec_helper'
 describe HamlAssets do
 
   it "should have the proper format" do
-    RailsApp::Application.assets['link_to.jst.ejs.haml'].to_s.should == "(function() {\n  this.JST || (this.JST = {});\n  this.JST[\"link_to\"] = function(obj){var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('');}return __p.join('');};\n}).call(this);\n"
+    RailsApp::Application.assets['link_to.jst.ejs.haml'].to_s.should == "(function() { this.JST || (this.JST = {}); this.JST[\"link_to\"] = function(obj){var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('');}return __p.join('');};\n}).call(this);\n"
   end
 
   context 'rendering' do
@@ -14,30 +14,30 @@ describe HamlAssets do
 
       it "handles data attributes" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q(%div{data:{bind:'attr: { "data-something": someValue }'}}) }
-        template.send(:render_haml, Object.new, {}).strip.should eq(%Q(<div data-bind='attr: { "data-something": someValue }'></div>))
+        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div data-bind='attr: { "data-something": someValue }'></div>))
       end
 
       it "allows nested quotes with ()" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div(ng-model-options='{updateOn: "blur"}')| }
-        template.send(:render_haml, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
+        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
       end
 
       it "allows nested quotes with {}" do
         Haml::Template.options[:attr_wrapper] = '"'
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => "{updateOn: 'blur'}"}| }
-        template.send(:render_haml, Object.new, {}).strip.should eq(%Q(<div ng-model-options="{updateOn: 'blur'}"></div>))
+        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options="{updateOn: 'blur'}"></div>))
       end
 
       it "allows nested quote with {} ('\"\"')" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => '{updateOn: "blur"}'}| }
-        template.send(:render_haml, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
+        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
       end
     end
 
 
     it "renders with a partial" do
       template = HamlAssets::HamlSprocketsEngine.new('app/assets/templates/with_partial.haml') { %Q(%div= render 'partial') }
-      partial = stub(identifier: 'identifier', render: 'partial')
+      partial = stub(identifier: 'identifier', render: 'partial', formats: [])
 
       HamlAssets::HamlSprocketsEngine::LookupContext.any_instance.should_receive(:find_template).and_return(partial)
 
@@ -47,7 +47,7 @@ describe HamlAssets do
 
       context.stub(environment_paths: [])
 
-      template.send(:render_haml, context, {}).strip.should eq(%Q(<div>partial</div>))
+      template.send(:evaluate, context, {}).strip.should eq(%Q(<div>partial</div>))
     end
   end
 
