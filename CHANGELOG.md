@@ -1,5 +1,8 @@
 ## On master
 
+* Loosen requirement of tilt gem
+* Upgrade json gem to latest current version patch
+
 ## v0.3.0 (2016-12-09)
 
 * Supports Rails 4
