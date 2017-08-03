@@ -1,5 +1,9 @@
 ## On master
 
+## v0.3.0 (2016-12-09)
+
+* Supports Rails 4
+
 ## v0.2.2 (2013-06-02)
 
 * Allow partials to be read from app/views
