@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "haml"
-  s.add_runtime_dependency "tilt", "~> 1.4.1"
+  s.add_runtime_dependency "tilt", "< 3", ">= 1.4"
 
   s.add_development_dependency 'rails', '~> 4.0'
   s.add_development_dependency 'rspec', '~> 2.13.0'

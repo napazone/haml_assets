@@ -1,7 +1,10 @@
 ## On master
 
+## v0.3.1 (unreleased)
+
 * Loosen requirement of tilt gem
 * Upgrade json gem to latest current version patch
+* Add method `haml_options` to engine to pass options to template engine or default to `Haml::Template.options`
 
 ## v0.3.0 (2016-12-09)
 

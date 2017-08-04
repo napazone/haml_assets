@@ -69,6 +69,13 @@ module HamlAssets
       end
     end
 
+    def prepare
+      if HamlAssets::Config.haml_options
+        @options = @options.merge(HamlAssets::Config.haml_options)
+      end
+      super
+    end
+
     def evaluate(scope, locals, &block)
       scope = view_context(scope)
       super
