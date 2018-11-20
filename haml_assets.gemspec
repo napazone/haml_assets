@@ -19,11 +19,12 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "haml"
-  s.add_runtime_dependency "tilt", "~> 1.4.1"
+  s.add_runtime_dependency "tilt"
 
   s.add_development_dependency 'rails', '~> 4.0'
   s.add_development_dependency 'rspec', '~> 2.13.0'
   s.add_development_dependency 'rspec-rails', '~> 2.13.0'
   s.add_development_dependency 'ejs'
   s.add_development_dependency 'test-unit', '~> 3.1.5'
+  s.add_development_dependency 'byebug'
 end
