@@ -13,23 +13,22 @@ describe HamlAssets do
       after { Haml::Template.options[:attr_wrapper] = "'" }
 
       it "handles data attributes" do
-        template = HamlAssets::HamlSprocketsEngine.new(path) { %Q(%div{data:{bind:'attr: { "data-something": someValue }'}}) }
+        template = HamlAssets::HamlSprocketsEngine.new(path) { %Q(%div{data:{bind:'attr: { "data-something": someValue }'.html_safe}}) }
         template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div data-bind='attr: { "data-something": someValue }'></div>))
       end
 
-      it "allows nested quotes with ()" do
+      it "does not allow nested quotes with ()" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div(ng-model-options='{updateOn: "blur"}')| }
-        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
+        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: &quot;blur&quot;}'></div>))
       end
 
       it "allows nested quotes with {}" do
-        Haml::Template.options[:attr_wrapper] = '"'
-        template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => "{updateOn: 'blur'}"}| }
+        template = HamlAssets::HamlSprocketsEngine.new(path, 1, {attr_wrapper: '"'}) { %Q|%div{"ng-model-options" => "{updateOn: 'blur'}".html_safe}| }
         template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options="{updateOn: 'blur'}"></div>))
       end
 
       it "allows nested quote with {} ('\"\"')" do
-        template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => '{updateOn: "blur"}'}| }
+        template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => '{updateOn: "blur"}'.html_safe}| }
         template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
       end
     end
