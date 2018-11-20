@@ -69,6 +69,21 @@ module HamlAssets
       end
     end
 
+    def initialize(file=nil, line=1, options={}, &block)
+      options[:escape_attrs] = false
+      super(file, line, options, &block)
+    end
+
+    def self.call(input={})
+      p [:call, input]
+      ii = new do
+        (input[:data])
+      end
+      # input[:data] = ii.render
+      # input[:data] = "HELLO"
+      {data: ii.render.to_str}
+    end
+
     def evaluate(scope, locals, &block)
       scope = view_context(scope)
       super
