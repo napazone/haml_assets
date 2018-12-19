@@ -1,0 +1,29 @@
+steps:
+
+  - id: 'SUPPRESS_GH-pull-cache'
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      - pull
+      - us.gcr.io/${PROJECT_ID}/${_APP_NAME}:cache
+    waitFor: ['-']
+
+  - id: 'SUPPRESS_GH-get-bundle-config'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://czi-dev-bundle-config/bundle-config', '.bundle/config']
+    waitFor: ['-']
+
+  - id: 'SUPPRESS_GH-build'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      docker build --cache-from=us.gcr.io/${PROJECT_ID}/${_APP_NAME}:cache -t app-test:latest -t us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA} -t us.gcr.io/${PROJECT_ID}/${_APP_NAME}:latest .
+
+  - id: 'test suite'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      docker run --rm us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA}
