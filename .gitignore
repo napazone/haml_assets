@@ -4,3 +4,4 @@ pkg/*
 .DS_Store
 **/*/log/*
 **/*/tmp/*
+.byebug_history
