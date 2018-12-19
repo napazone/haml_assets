@@ -12,6 +12,14 @@ steps:
     args: ['cp', 'gs://czi-dev-bundle-config/bundle-config', '.bundle/config']
     waitFor: ['-']
 
+  - id: 'SUPPRESS_GH-get-geminabox-config'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - cp
+      - gs://czi-dev-bundle-config/geminabox
+      - geminabox
+    waitFor: ['-']
+
   - id: 'SUPPRESS_GH-build'
     name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
