@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe HamlAssets do
-
   it "should have the proper format" do
-    RailsApp::Application.assets['link_to.jst.ejs.haml'].to_s.should == "(function() { this.JST || (this.JST = {}); this.JST[\"link_to\"] = function(obj){var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('');}return __p.join('');};\n}).call(this);\n"
+    expect(RailsApp::Application.assets['link_to.jst.ejs.haml'].to_s).to eq("(function() { this.JST || (this.JST = {}); this.JST[\"link_to\"] = function(obj){var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('');}return __p.join('');};\n}).call(this);\n")
   end
 
   context 'rendering' do
@@ -14,44 +13,42 @@ describe HamlAssets do
 
       it "handles data attributes" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q(%div{data:{bind:'attr: { "data-something": someValue }'.html_safe}}) }
-        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div data-bind='attr: { "data-something": someValue }'></div>))
+        expect(template.send(:evaluate, Object.new, {}).strip).to eq(%Q(<div data-bind='attr: { "data-something": someValue }'></div>))
       end
 
       it "does not allow nested quotes with ()" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div(ng-model-options='{updateOn: "blur"}')| }
-        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: &quot;blur&quot;}'></div>))
+        expect(template.send(:evaluate, Object.new, {}).strip).to eq(%Q(<div ng-model-options='{updateOn: &quot;blur&quot;}'></div>))
       end
 
       it "allows nested quotes with {}" do
         template = HamlAssets::HamlSprocketsEngine.new(path, 1, {attr_wrapper: '"'}) { %Q|%div{"ng-model-options" => "{updateOn: 'blur'}".html_safe}| }
-        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options="{updateOn: 'blur'}"></div>))
+        expect(template.send(:evaluate, Object.new, {}).strip).to eq(%Q(<div ng-model-options="{updateOn: 'blur'}"></div>))
       end
 
       it "allows nested quote with {} ('\"\"')" do
         template = HamlAssets::HamlSprocketsEngine.new(path) { %Q|%div{"ng-model-options" => '{updateOn: "blur"}'.html_safe}| }
-        template.send(:evaluate, Object.new, {}).strip.should eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
+        expect(template.send(:evaluate, Object.new, {}).strip).to eq(%Q(<div ng-model-options='{updateOn: "blur"}'></div>))
       end
     end
 
-
     it "renders with a partial" do
       template = HamlAssets::HamlSprocketsEngine.new('app/assets/templates/with_partial.haml') { %Q(%div= render 'partial') }
-      partial = stub(identifier: 'identifier', render: 'partial', formats: [])
+      partial = double(formats: [], identifier: 'identifier', render: 'partial', virtual_path: '')
 
-      HamlAssets::HamlSprocketsEngine::LookupContext.any_instance.should_receive(:find_template).and_return(partial)
+      expect_any_instance_of(HamlAssets::HamlSprocketsEngine::LookupContext).to receive(:find_template).and_return(partial)
 
       context = Class.new do
         include HamlAssets::HamlSprocketsEngine::ViewContext
       end.new
 
-      context.stub(environment_paths: [])
+      expect(context).to receive(:environment_paths).and_return([])
 
-      template.send(:evaluate, context, {}).strip.should eq(%Q(<div>partial</div>))
+      expect(template.send(:evaluate, context, {}).strip).to eq(%Q(<div>partial</div>))
     end
   end
 
   context 'rendering from app/views' do
-
     class Context
       include HamlAssets::HamlSprocketsEngine::ViewContext
 
@@ -59,7 +56,7 @@ describe HamlAssets do
     end
 
     let(:context) { Context.new }
-    let(:environment) { stub :environment, paths: paths }
+    let(:environment) { double(paths: paths) }
     let(:paths) { ['path1', 'path2' ] }
 
     before { context.environment = environment }
@@ -68,12 +65,12 @@ describe HamlAssets do
 
     it 'when not on, just uses the environment paths to find templates' do
       HamlAssets::Config.look_in_app_views = false
-      context.environment_paths.should eq(paths)
+      expect(context.environment_paths).to eq(paths)
     end
 
     it 'when on, adds app/views to the environment paths to find templates' do
       HamlAssets::Config.look_in_app_views = true
-      context.environment_paths.should eq(paths + [(Rails.root + 'app/views').to_s])
+      expect(context.environment_paths).to eq(paths + [(Rails.root + 'app/views').to_s])
     end
   end
 end
