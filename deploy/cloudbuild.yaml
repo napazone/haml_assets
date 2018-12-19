@@ -34,4 +34,4 @@ steps:
     args:
     - -c
     - |
-      docker run --rm us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA}
+      docker run --rm us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA} bundle exec rspec
