@@ -1,0 +1,4 @@
+**/*.gem
+*.git
+**/*.ruby-version
+**/*README.md

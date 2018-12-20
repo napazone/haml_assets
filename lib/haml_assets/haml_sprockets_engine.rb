@@ -69,6 +69,13 @@ module HamlAssets
       end
     end
 
+    def self.call(input={})
+      ii = new do
+        (input[:data])
+      end
+      {data: ii.render(Sprockets::Context.new(input)).to_str}
+    end
+
     def evaluate(scope, locals, &block)
       scope = view_context(scope)
       super
@@ -78,7 +85,14 @@ module HamlAssets
 
     def view_context(scope)
       @view_context ||= scope.tap do |s|
-        s.singleton_class.instance_eval { include HamlAssets::HamlSprocketsEngine::ViewContext }
+        s.singleton_class.instance_eval do
+          include HamlAssets::HamlSprocketsEngine::ViewContext
+          if defined? ::Sprockets::Rails::Context
+            include ::Sprockets::Rails::Context
+            self.assets_prefix = Rails.configuration.assets.prefix
+            self.digest_assets = Rails.configuration.assets.digest
+          end
+        end
       end
     end
   end

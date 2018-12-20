@@ -1,0 +1,34 @@
+steps:
+
+  - id: 'SUPPRESS_GH-get-bundle-config'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', 'gs://czi-dev-bundle-config/bundle-config', '.bundle/config']
+    waitFor: ['-']
+
+  - id: 'SUPPRESS_GH-get-geminabox-config'
+    name: 'gcr.io/cloud-builders/gsutil'
+    args:
+      - cp
+      - gs://czi-dev-bundle-config/geminabox
+      - geminabox
+    waitFor: ['-']
+
+  - id: 'SUPPRESS_GH-build'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      docker build -t us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA} -t us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:latest .
+
+  - id: 'test suite'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      docker run --rm us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA} bundle exec rspec
+
+images:
+  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:latest
+  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA}

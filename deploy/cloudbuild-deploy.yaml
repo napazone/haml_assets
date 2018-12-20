@@ -1,0 +1,17 @@
+steps:
+
+  - id: 'validate build'
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - container
+      - images
+      - describe
+      - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA}
+
+  - id: 'publish gem'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+    - -c
+    - |
+      docker run --rm us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA} /bin/sh -c "bundle exec rake build && gem install geminabox && gem inabox pkg/${_GEM_NAME}-${TAG_NAME}.gem"
