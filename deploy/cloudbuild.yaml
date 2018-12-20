@@ -31,4 +31,4 @@ steps:
 
 images:
   - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:latest
-  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA
+  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA}
