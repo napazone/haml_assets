@@ -1,12 +1,5 @@
 steps:
 
-  - id: 'SUPPRESS_GH-pull-cache'
-    name: 'gcr.io/cloud-builders/docker'
-    args:
-      - pull
-      - us.gcr.io/${PROJECT_ID}/${_APP_NAME}:cache
-    waitFor: ['-']
-
   - id: 'SUPPRESS_GH-get-bundle-config'
     name: 'gcr.io/cloud-builders/gsutil'
     args: ['cp', 'gs://czi-dev-bundle-config/bundle-config', '.bundle/config']
@@ -26,7 +19,7 @@ steps:
     args:
     - -c
     - |
-      docker build --cache-from=us.gcr.io/${PROJECT_ID}/${_APP_NAME}:cache -t app-test:latest -t us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA} -t us.gcr.io/${PROJECT_ID}/${_APP_NAME}:latest .
+      docker build -t us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA} -t us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:latest .
 
   - id: 'test suite'
     name: 'gcr.io/cloud-builders/docker'
@@ -34,4 +27,8 @@ steps:
     args:
     - -c
     - |
-      docker run --rm us.gcr.io/${PROJECT_ID}/${_APP_NAME}:${COMMIT_SHA} bundle exec rspec
+      docker run --rm us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA} bundle exec rspec
+
+images:
+  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:latest
+  - us.gcr.io/${PROJECT_ID}/${_GEM_NAME}:${COMMIT_SHA
