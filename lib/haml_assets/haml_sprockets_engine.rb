@@ -54,6 +54,7 @@ module HamlAssets
         klass.instance_eval do
           include Rails.application.routes.url_helpers
           include Rails.application.routes.mounted_helpers
+          include Rails.application.helpers
           include ActionView::Helpers
 
           alias_method :output_buffer_without_haml, :output_buffer
